@@ -28,7 +28,7 @@ typedef struct layer{
     int kernelDimCount;
     int activationType;
     int layerType;
-    void(*activationFunc)(layer* lay);
+    void(*activationFunction)(layer* lay);
 }layer;
 
 typedef struct{

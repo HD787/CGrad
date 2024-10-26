@@ -12,9 +12,9 @@
 
 
 
-void conv2dActivation(lay->previous; layer* curr){
+void conv2dActivation(lay* prev; layer* curr){
     if(curr->padDimCount > 4 || curr->padDimCount < 2) {printf("invalid dimension count for pool"); return;}
-    tensor* nt = ntaddPadding(t, curr->padding, curr->padDimCount);
+    tensor* nt = ntaddPadding(prev->activation, curr->padding, curr->padDimCount);
     int shape[4];
     shape[0] = (padDimCount > 3): nt->shape[0] ? 1;
     shape[1] = (padDimCount > 2): nt->shape[1] ? 1;
@@ -25,7 +25,7 @@ void conv2dActivation(lay->previous; layer* curr){
             for(int k = 0; k < shape[2]; k++){
                 //increment by k * ykernel
                 for(int l = 0; l < shape[3]; l++)
-                //increment by l * xkernel
+                    //increment by l * xkernel
             }
         }
     }
@@ -36,7 +36,7 @@ void activate(nn* n){}
 
 void gradient(nn* n){
     for(int i = 0; i < n->length; i++){
-        switch(n->graph[i]->layerType){
+        switch(n->graph[i].layerType){
             case NO_TYPE:{
                 break;
             }
@@ -45,13 +45,14 @@ void gradient(nn* n){
                 break;
             }
             case CONV:{
-                conv2dActivation(n->graph[i - 1], n->graph[i]);
+                conv2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
             case POOL:{
                 //pool function
+                break;
             }
         }
-        //maybe call a activation function here with a function pointer
+        n->graph[i].activationFunction(n->graph[i]);
     }
 }
