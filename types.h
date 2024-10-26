@@ -19,17 +19,20 @@ typedef struct{
     int grad;
 }tensor;
 
-typedef struct{
+typedef struct layer{
     tensor* weight;
     tensor* activation;
     int* padding;
+    int* kernelShape;
     int padDimCount;
+    int kernelDimCount;
     int activationType;
     int layerType;
+    void(*activationFunc)(layer* lay);
 }layer;
 
 typedef struct{
-    layer* layers;
+    layer* graph;
     int length;
 }nn;
 
