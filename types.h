@@ -1,5 +1,5 @@
 enum layerTypes{
-    NOTYPE,
+    NO_TYPE,
     LINEAR,
     CONV,
     POOL
@@ -23,8 +23,9 @@ typedef struct{
     tensor* weight;
     tensor* activation;
     int* padding;
+    int padDimCount;
     int activationType;
-    int LayerType;
+    int layerType;
 }layer;
 
 typedef struct{

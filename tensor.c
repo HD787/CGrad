@@ -53,7 +53,7 @@ tensor* addPadding(tensor* t, int* pads, int padDimCount){
     //pads must be even numbers
     int newShape[t->ndim]; //this may effect the compilation on barebones c11+ compilers
     memcpy(newShape, t->shape, t->ndim);
-    for(int i = 1; i < t->padDimCount; i++) newShape[t->ndim - i] = (padDimCount)pads[t->ndim - i] + t->shape[t->ndim - i];
+    for(int i = 0; i < padDimCount; i++) newShape[t->ndim - i] = pads[t->ndim - i] + t->shape[t->ndim - i];
     int multiplier = 1;
     for(int i = 0; i < t->ndim + 1; i++) multiplier *= newShape[i];
     tensor* nt = createTensor(newShape, t->ndim);
@@ -85,7 +85,7 @@ tensor* addPadding(tensor* t, int* pads, int padDimCount){
 void reshape(tensor* t, int* shape, int ndim){
     int size = 1;
     for(int i = 0; i < ndim; i++) size *= shape[i];
-    if(size != t->length) printf("invalid reshape");
+    if(size != t->length){ printf("invalid reshape"); return; }
     memcpy(t->shape, shape, sizeof(int) * ndim);
     t->ndim = ndim;
 }

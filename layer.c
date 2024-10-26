@@ -16,36 +16,47 @@ layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount){
     lay->layerType = LINEAR;
     int weightShape[2] = {outputLength, t->length};
     lay->weight = createTensor(weightShape, 4);
-    lay->activation = createTensor(outputShape, 4)
+    lay->activation = createTensor(outputShape, 4);
     return lay;
 }
 
 layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount){
-
-    
     layer* lay = malloc(sizeof(layer));
-    tensor* nt = ntaddPadding(t, padding, padDimCount);
-    
-
-
-    //move this code to the forward pass activation when it exists
-    // if(padDimCount > 4 || padDimCount < 2) {printf("invalid dimension count for pool"); return NULL;}
-    // int shape[4];
-    // shape[0] = (padDimCount > 3): nt->shape[0] ? 1;
-    // shape[1] = (padDimCount > 2): nt->shape[1] ? 1;
-    // shape[2] = nt->shape[2];
-    // shape[3] = nt->shape[3];
-    // for(int i = 0; i < shape[0]; i++){
-    //     for(int j = 0; j < shape[1]; j++){
-    //         for(int k = 0; k < shape[2]; k++){
-    //             //increment by k * ykernel
-    //             for(int l = 0; l < shape[3]; l++)
-    //             //increment by l * xkernel
-    //         }
-    //     }
-    // }
-
-    lay->activation = 
+    int x = (t->shape[t->ndim]);
+    int y = (t->shape[t->ndim - 1]);
+    if(t->ndim > 4){
+        printf("invalid shape");
+        return NULL; 
+    }
+    switch(t->ndim){
+        case 1: {
+            printf("invalid shape");
+            return NULL;
+        }
+        case 2:{
+            int shape[2] = { x, y };
+            lay->activation = createTensor(shape, 2);
+        }
+        case 3:{
+            int shape[3] = {
+                t->shape[0],
+                x,
+                y
+            };
+            lay->activation = createTensor(shape, 3);
+        }
+        case 4:{
+            int shape[4]= {
+                t->shape[0], 
+                t->shape[1],
+                x,
+                y
+            };
+            lay->activation = createTensor(shape, 4);
+        }
+    }
+    memcpy(lay->padding, padding, padDimCount);
+    lay->weight = NULL;
     lay->layerType = POOL;
     return lay;
 }
