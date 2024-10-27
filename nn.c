@@ -13,6 +13,7 @@ void addLayer(nn* n, layer* lay){
 }
 
 void conv2dActivation(lay* prev; layer* curr){
+    //maybe move this line out of here, checks should happend earlier
     if(curr->padDimCount > 4 || curr->padDimCount < 2) {printf("invalid dimension count for pool"); return;}
     tensor* nt = ntaddPadding(prev->activation, curr->padding, curr->padDimCount);
     int shape[4];
@@ -31,6 +32,10 @@ void conv2dActivation(lay* prev; layer* curr){
     }
     curr->activation = nt;
 }
+
+void linearActivation(layer* prev, layer* curr){}
+
+void poolActivation(layer* prev, prev* curr){}
 
 void activate(nn* n){
     for(int i = 0; i < n->length; i++){
