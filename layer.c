@@ -13,8 +13,7 @@ layer* conv2d(tensor* t, int* padding, int* filterShape, int kernelShape, int st
     return lay;
 }
 
-layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount){ 
-    
+layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = LINEAR;
     int weightShape[2] = {outputLength, t->length};

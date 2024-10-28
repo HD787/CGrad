@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "tensor.c"
-#include "internalOperations.c"
 #include "layer.c" 
 #include "nn.c"
 

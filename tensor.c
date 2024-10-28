@@ -1,4 +1,4 @@
-#include "internalOperations.c"
+#include "privateTensorOps.c"
 int findIndex(tensor* t, int* indices){
     int index = 0;
     int len = t->ndim;
@@ -34,7 +34,7 @@ void deleteCoords(coord* coords){
 
 void repr(tensor* t){
     int index = 0;
-    reprRecurse(t, 0, &index);
+    _reprRecurse(t, 0, &index);
 }
 
 tensor* createTensor(int* shape, int ndim){

@@ -1,4 +1,4 @@
-void reprRecurse(tensor* t, int level, int* index){
+void _reprRecurse(tensor* t, int level, int* index){
     if(level == t->ndim - 1){
         printf("[");
         for(int i = 0; i < t->shape[level]; i++){
@@ -10,7 +10,7 @@ void reprRecurse(tensor* t, int level, int* index){
     }
     for(int i = 0; i < t->shape[level]; i++){
         printf("[");
-        reprRecurse(t, level + 1, index);
+        _reprRecurse(t, level + 1, index);
         printf("]\n");
     }
 }
