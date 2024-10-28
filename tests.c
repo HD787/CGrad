@@ -13,7 +13,7 @@ void testCoords(){
     };
     memcpy(first->data, data, sizeof(float)*32);
     int pad[] = {2, 2};
-    // addPadding(pad, first);
+    // pad(pad, first);
     // coord* coords = findCoords(11, first); printf("%d, %d\n", coords->coords[0],coords->coords[1]);
     repr()
 }

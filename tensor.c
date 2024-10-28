@@ -49,7 +49,7 @@ tensor* createTensor(int* shape, int ndim){
     return t;
 }
 
-tensor* addPadding(tensor* t, int* pads, int padDimCount){
+tensor* pad(tensor* t, int* pads, int padDimCount){
     //pads must be even numbers
     int newShape[t->ndim]; //this may effect the compilation on barebones c11+ compilers
     memcpy(newShape, t->shape, t->ndim);

@@ -40,5 +40,3 @@ typedef struct{
     int* coords;
     int ndim;
 }coord;
-
-
