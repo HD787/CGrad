@@ -2,11 +2,14 @@ layer* conv2d(tensor* t, int* padding, int* filterShape, int kernelShape, int st
     layer* lay = malloc(sizeof(layer));
     lay->layerType = CONV;
     lay->padding = malloc(sizeof(int)*2);
+    lay->padDimCount = 2;
     memcpy(lay->padding, padding, 2);
     //{filters, channels, input X, input Y}
     int weightShape[4] = {kernelShape, channelCount, filterShape[0], filterShape[1]};
     //{batch size, filter, input X, input Y}
     int activationShape[4] = {t->shape[0], kernelShape, t->shape[2], t->shape[3]};
+    lay->weight = createTensor(weightShape, 4);
+    lay->activation = createTensor(activationShape, 4);
     return lay;
 }
 
