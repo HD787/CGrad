@@ -90,3 +90,5 @@ void reshape(tensor* t, int* shape, int ndim){
     t->ndim = ndim;
 }
 
+void freeze(tensor* t){ t->grad = 0; }
+void unfreeze(tensor* t){ t->grad = 1; }
