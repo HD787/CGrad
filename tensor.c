@@ -1,4 +1,7 @@
 #include "privateTensorOps.c"
+
+//ORGANIZE THIS by tensor gen functions, tensor op functions, and activation functions
+
 int findIndex(tensor* t, int* indices){
     int index = 0;
     int len = t->ndim;
@@ -106,4 +109,13 @@ void squeeze(tensor* t){
     }
     t->ndim = c;
     t->shape = realloc(newShape, sizeof(int) * c);
+}
+
+/*ACTIVATION FUNCTIONS*/
+void relu(tensor* t){
+    ;
+}
+
+void sigmoid(tensor* t){
+    ;
 }

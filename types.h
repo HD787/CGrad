@@ -26,7 +26,7 @@ typedef struct layer{
     tensor* activation;
     int* padding;
     int* kernelShape;
-    void(*activationFunction)(struct layer* lay);
+    void(*activationFunction)(tensor* t);
     int useBias;
     int padDimCount;
     int kernelDimCount;

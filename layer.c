@@ -7,7 +7,7 @@ layer* input(tensor* t){
     return lay;
 }
 
-layer* conv2d(tensor* t, int* padding, int* kernelShape, int kernelCount, int stride, int channelCount){
+layer* conv2d(tensor* t, int* padding, int* kernelShape, int kernelCount, int stride, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = CONV;
     lay->padding = malloc(sizeof(int)*2);
@@ -19,19 +19,21 @@ layer* conv2d(tensor* t, int* padding, int* kernelShape, int kernelCount, int st
     int activationShape[4] = {t->shape[0], kernelCount, t->shape[2], t->shape[3]};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(activationShape, 4);
+    lay->activationFunction = getActivation(activationFunc);
     return lay;
 }
 
-layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount){
+layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount, int ActivationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = LINEAR;
     int weightShape[2] = {outputLength, t->length};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(outputShape, 4);
+    lay->activationFunction = getActivation(activationFunc);
     return lay;
 }
 
-layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount){
+layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     int x = (t->shape[t->ndim]);
     int y = (t->shape[t->ndim - 1]);
@@ -69,6 +71,7 @@ layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount){
     memcpy(lay->padding, padding, padDimCount);
     lay->weight = NULL;
     lay->layerType = POOL;
+    lay->activationFunction = getActivation(activationFunc);
     return lay;
 }
 
@@ -76,4 +79,19 @@ layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount){
 
 void randomizeWeights(layer* lay){
     randomize(lay->weight);
+}
+
+void (*getActivation(int function))(tensor* t){
+    switch(function){
+        case NO_ACTIVATION:{
+            return NULL;
+        }
+        case RELU:{
+            return relu;
+        }
+        case SIGMOID:{
+            return sigmoid;
+        }
+    }
+
 }

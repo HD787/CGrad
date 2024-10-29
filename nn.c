@@ -63,6 +63,9 @@ void forward(nn* n){
             case NO_TYPE:{
                 break;
             }
+            case INPUT:{
+                break;
+            }
             case LINEAR:{
                 //linear function
                 break;
@@ -76,7 +79,9 @@ void forward(nn* n){
                 break;
             }
         }
-        n->graph[i].activationFunction(&n->graph[i]);
+        if(activationType != NO_ACTIVATION){
+            n->graph[i].activationFunction(&n->graph[i]);
+        }
     }
 }
 
