@@ -21,12 +21,21 @@ void conv2dActivation(layer* prev, layer* curr){
     shape[1] = (curr->padDimCount > 2)? nt->shape[1] : 1;
     shape[2] = nt->shape[2];
     shape[3] = nt->shape[3];
-    for(int i = 0; i < shape[0]; i++){
-        for(int j = 0; j < shape[1]; j++){
-            for(int k = 0; k < shape[2]; k++){
-                //increment by k * ykernel
-                for(int l = 0; l < shape[3]; l++){
-                    //increment by l * xkernel
+    int tensorCoords[4] = {0, 0, 0, 0}
+    for(int i = 0; i < shape[0]; i++){//input tensor batch
+        for(int j = 0; j < shape[1]; j++){//input tensor channel dim
+            for(int k = 0; k < shape[3]; k += curr->kernelStride){//input tensor y dim
+                for(int l = 0; l < shape[2]; l += curr->kernelStride){//input tensor x dim
+                    float sum = 0;
+                    for(int m = 0; m < curr->kernelShape[1]; m++){ //kernel y dim
+                        for(int n = 0; n < curr->kernelShape[0]; n++){ //kernel x dim
+                            //multiply the weight value by the previous activation
+                            //this weight index needs to account for batch and channel dims
+                            sum += (curr->weight[m * curr->kernelShape[0] + n] * prev->activation[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
+                        }
+                    }
+                    //write sum to output activation tensor
+                    curr->activation[findIndex(i, j, k+m, l+n)] = sum;
                 }
             }
         }
@@ -39,7 +48,8 @@ void linearActivation(layer* prev, layer* curr){}
 void poolActivation(layer* prev, layer* curr){}
 
 void activate(nn* n){
-    for(int i = 0; i < n->length; i++){
+    if(n->length < 1) { printf("neural net has less than one layer"); return; }
+    for(int i = 1; i < n->length; i++){
         switch(n->graph[i].layerType){
             case NO_TYPE:{
                 break;

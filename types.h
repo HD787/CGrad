@@ -1,5 +1,6 @@
 enum layerTypes{
     NO_TYPE,
+    INPUT,
     LINEAR,
     CONV,
     POOL
@@ -26,6 +27,7 @@ typedef struct layer{
     int* kernelShape;
     int padDimCount;
     int kernelDimCount;
+    int kernelStride;
     int activationType;
     int layerType;
     void(*activationFunction)(struct layer* lay);
