@@ -13,6 +13,18 @@ void addLayer(nn* n, layer* lay){
 }
 
 void conv2dActivation(layer* prev, layer* curr){
+    if(prev->activation->ndim < 4){
+        printf("convolution input layer is the wrong shape");
+        return;
+    }
+    if(prev->activation->shape[0] != curr->weight->shape[0]){
+        printf("batch count mismatch between input and current layer got %i, expected %i", prev->activation->shape[0], curr->weight->shape[0]); 
+        return;
+    }
+    if(prev->activation->shape[1] != curr->weight->shape[1]){
+        printf("channel count mismatch between input and current layer got %i, expected %i", prev->activation->shape[1], curr->weight->shape[1]); 
+        return;
+    }
     tensor* nt = pad(prev->activation, curr->padding, curr->padDimCount);
     int shape[4];
     shape[0] = (curr->padDimCount > 3)? nt->shape[0] : 1;
