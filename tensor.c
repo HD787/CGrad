@@ -94,3 +94,16 @@ void freeze(tensor* t){ t->grad = 0; }
 void unfreeze(tensor* t){ t->grad = 1; }
 
 void randomize(tensor* t){;}
+
+void squeeze(tensor* t){
+    int c = 0;
+    newShape = malloc(sizeof(int) * t->ndim);
+    for(int i= 0; i < t->ndim; i++){
+        if(t->shape[i] > 1){
+            newShape[c] = t->shape[i];
+            c++;
+        }
+    }
+    t->ndim = c;
+    t->shape = realloc(newShape, sizeof(int) * c);
+}

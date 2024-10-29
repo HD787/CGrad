@@ -13,15 +13,12 @@ void addLayer(nn* n, layer* lay){
 }
 
 void conv2dActivation(layer* prev, layer* curr){
-    //maybe move this line out of here, checks should happen earlier
-    if(curr->padDimCount > 4 || curr->padDimCount < 2) {printf("invalid dimension count for pool"); return;}
     tensor* nt = pad(prev->activation, curr->padding, curr->padDimCount);
     int shape[4];
     shape[0] = (curr->padDimCount > 3)? nt->shape[0] : 1;
     shape[1] = (curr->padDimCount > 2)? nt->shape[1] : 1;
     shape[2] = nt->shape[2];
     shape[3] = nt->shape[3];
-    int tensorCoords[4] = {0, 0, 0, 0}
     for(int i = 0; i < shape[0]; i++){//input tensor batch
         for(int j = 0; j < shape[1]; j++){//input tensor channel dim
             for(int k = 0; k < shape[3]; k += curr->kernelStride){//input tensor y dim
@@ -30,8 +27,8 @@ void conv2dActivation(layer* prev, layer* curr){
                     for(int m = 0; m < curr->kernelShape[1]; m++){ //kernel y dim
                         for(int n = 0; n < curr->kernelShape[0]; n++){ //kernel x dim
                             //multiply the weight value by the previous activation
-                            //this weight index needs to account for batch and channel dims
-                            sum += (curr->weight[m * curr->kernelShape[0] + n] * prev->activation[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
+                            //also how do we know the prev layer activation tensor is 4 dims, need to make this extensible
+                            sum += (curr->weight[findIndex(curr->weight, (int[]){i, j, k+m, l+n})] * prev->activation[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
                         }
                     }
                     //write sum to output activation tensor
