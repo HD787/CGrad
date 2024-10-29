@@ -22,15 +22,17 @@ typedef struct{
 
 typedef struct layer{
     tensor* weight;
+    tensor* bias;
     tensor* activation;
     int* padding;
     int* kernelShape;
+    void(*activationFunction)(struct layer* lay);
+    int useBias;
     int padDimCount;
     int kernelDimCount;
     int kernelStride;
     int activationType;
     int layerType;
-    void(*activationFunction)(struct layer* lay);
 }layer;
 
 typedef struct{

@@ -47,7 +47,7 @@ void linearActivation(layer* prev, layer* curr){}
 
 void poolActivation(layer* prev, layer* curr){}
 
-void activate(nn* n){
+void forward(nn* n){
     if(n->length < 1) { printf("neural net has less than one layer"); return; }
     for(int i = 1; i < n->length; i++){
         switch(n->graph[i].layerType){
@@ -71,6 +71,6 @@ void activate(nn* n){
     }
 }
 
-void gradient(nn* n){
+void backward(nn* n){
 
 }
