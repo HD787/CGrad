@@ -31,6 +31,7 @@ void conv2dActivation(layer* prev, layer* curr){
     shape[1] = (curr->padDimCount > 2)? nt->shape[1] : 1;
     shape[2] = nt->shape[2];
     shape[3] = nt->shape[3];
+    //consider referring to x and y and width and height from now on
     for(int i = 0; i < shape[0]; i++){//input tensor batch
         for(int j = 0; j < shape[1]; j++){//input tensor channel dim
             for(int k = 0; k < shape[3]; k += curr->kernelStride){//input tensor y dim
@@ -39,12 +40,10 @@ void conv2dActivation(layer* prev, layer* curr){
                     for(int m = 0; m < curr->kernelShape[1]; m++){ //kernel y dim
                         for(int n = 0; n < curr->kernelShape[0]; n++){ //kernel x dim
                             //multiply the weight value by the previous activation
-                            //also how do we know the prev layer activation tensor is 4 dims, need to make this extensible
                             sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, k+m, l+n})] * prev->activation->data[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
                         }
                     }
                     //write sum to output activation tensor
-                    //this isnt scoped properly, figure it out
                     curr->activation->data[findIndex(curr->activation, (int[]){i, j, k, l})] = sum;
                 }
             }
