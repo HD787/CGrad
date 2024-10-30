@@ -40,11 +40,12 @@ void conv2dActivation(layer* prev, layer* curr){
                         for(int n = 0; n < curr->kernelShape[0]; n++){ //kernel x dim
                             //multiply the weight value by the previous activation
                             //also how do we know the prev layer activation tensor is 4 dims, need to make this extensible
-                            sum += (curr->weight[findIndex(curr->weight, (int[]){i, j, k+m, l+n})] * prev->activation[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
+                            sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, k+m, l+n})] * prev->activation->data[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
                         }
                     }
                     //write sum to output activation tensor
-                    curr->activation[findIndex(i, j, k+m, l+n)] = sum;
+                    //this isnt scoped properly, figure it out
+                    curr->activation->data[findIndex(curr->activation, (int[]){i, j, k, l})] = sum;
                 }
             }
         }
@@ -79,8 +80,8 @@ void forward(nn* n){
                 break;
             }
         }
-        if(activationType != NO_ACTIVATION){
-            n->graph[i].activationFunction(&n->graph[i]);
+        if(n->graph[i].activationType != NO_ACTIVATION){
+            n->graph[i].activationFunction(n->graph[i].activation);
         }
     }
 }

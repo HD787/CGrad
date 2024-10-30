@@ -1,3 +1,25 @@
+/* layer operation functions */
+void (*getActivation(int function))(tensor* t){
+    switch(function){
+        case NO_ACTIVATION:{
+            return NULL;
+        }
+        case RELU:{
+            return relu;
+        }
+        case SIGMOID:{
+            return sigmoid;
+        }
+        default:{
+            return NULL;
+        }
+    }
+}
+
+
+void randomizeWeights(layer* lay){
+    randomize(lay->weight);
+}
 
 /* Layer generation functions */
 layer* input(tensor* t){
@@ -23,7 +45,7 @@ layer* conv2d(tensor* t, int* padding, int* kernelShape, int kernelCount, int st
     return lay;
 }
 
-layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount, int ActivationFunc){
+layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = LINEAR;
     int weightShape[2] = {outputLength, t->length};
@@ -75,23 +97,6 @@ layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount, int
     return lay;
 }
 
-/* layer operation functions */
 
-void randomizeWeights(layer* lay){
-    randomize(lay->weight);
-}
 
-void (*getActivation(int function))(tensor* t){
-    switch(function){
-        case NO_ACTIVATION:{
-            return NULL;
-        }
-        case RELU:{
-            return relu;
-        }
-        case SIGMOID:{
-            return sigmoid;
-        }
-    }
 
-}
