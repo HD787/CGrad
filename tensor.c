@@ -54,17 +54,13 @@ tensor* createTensor(int* shape, int ndim){
 
 tensor* pad(tensor* t, int* pads, int padDimCount){
     //pads must be even numbers
+    //add checks for this 
     int newShape[t->ndim]; //this may effect the compilation on barebones c11+ compilers
     memcpy(newShape, t->shape, sizeof(int) * t->ndim);
-    for(int i = 0; i < padDimCount; i++){
-        newShape[i] = (pads[i] / 2) + t->shape[i];
-        printf(" %i ", t->shape[i]);
-    }
+    for(int i = 0; i < padDimCount; i++) newShape[i] = (pads[i] / 2) + t->shape[i];
     int multiplier = 1;
-    // printf("%i ", newShape[0]);
-    for(int i = 0; i < t->ndim; i++) {multiplier *= newShape[i]; }
+    for(int i = 0; i < t->ndim; i++) multiplier *= newShape[i];
     tensor* nt = createTensor(newShape, t->ndim);
-    printf("%i",multiplier);
     float* newData = calloc(multiplier, sizeof(float));
     int i = 0; int j = 0;
 
