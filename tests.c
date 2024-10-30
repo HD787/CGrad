@@ -23,7 +23,7 @@ void testIndex(){
     tensor* t = createTensor((int[]){3, 3}, 2);
     tensor* nt = pad(t, (int[]){4,4}, 2);
     repr(nt);
-    // printf("%i", t->length);
+    printf("%i", t->length);
 }
 
 void testPadding(){}
