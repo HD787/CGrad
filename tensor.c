@@ -40,6 +40,15 @@ void repr(tensor* t){
     _reprRecurse(t, 0, &index);
 }
 
+void showShape(tensor* t){
+    printf("%i dims: { ", t->ndim);
+    for(int i = 0; i < t->ndim; i++){
+        printf("%i", t->shape[i]);
+        if(i != t->ndim -1) printf(", ");
+    }
+    printf(" }");
+}
+
 tensor* createTensor(int* shape, int ndim){
     tensor* t = malloc(sizeof(tensor));
     t->ndim = ndim;
