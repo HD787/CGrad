@@ -1,15 +1,15 @@
 #include <stdarg.h>
 nn* createNn(){
     nn* newnn = malloc(sizeof(nn));
-    newnn->graph = malloc(sizeof(layer));
     newnn->length = 0;
+    newnn->graph = malloc(sizeof(layer) * newnn->length);
     return newnn;
 }
 
 void addLayer(nn* n, layer* lay){
-    n->length++;
-    n->graph = realloc(n->graph, sizeof(layer)* n->length);
+    n->graph = realloc(n->graph, sizeof(layer) * n->length + 1);
     n->graph[n->length] = *lay;
+    n->length++;
 }
 
 void conv2dActivation(layer* prev, layer* curr){

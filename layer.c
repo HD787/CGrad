@@ -29,7 +29,7 @@ layer* input(tensor* t){
     return lay;
 }
 
-layer* conv2d(tensor* t, int* padding, int* kernelShape, int kernelCount, int stride, int channelCount, int activationFunc){
+layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, int stride, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = CONV;
     lay->padding = malloc(sizeof(int)*2);
@@ -38,17 +38,17 @@ layer* conv2d(tensor* t, int* padding, int* kernelShape, int kernelCount, int st
     //{filters, channels, input X, input Y}
     int weightShape[4] = {kernelCount, channelCount, kernelShape[0], kernelShape[1]};
     //{batch count, filter, input X, input Y}
-    int activationShape[4] = {t->shape[0], kernelCount, t->shape[2], t->shape[3]};
+    int activationShape[4] = {input->shape[0], kernelCount,input->shape[2],input->shape[3]};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(activationShape, 4);
     lay->activationFunction = getActivation(activationFunc);
     return lay;
 }
 
-layer* linear(tensor* t, int* outputShape, int outputLength, int channelCount, int activationFunc){
+layer* linear(tensor* input, int* outputShape, int outputLength, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = LINEAR;
-    int weightShape[2] = {outputLength, t->length};
+    int weightShape[2] = {outputLength, input->length};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(outputShape, 4);
     lay->activationFunction = getActivation(activationFunc);

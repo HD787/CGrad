@@ -35,18 +35,19 @@ void deleteCoords(coord* coords){
     free(coords);
 }
 
-void repr(tensor* t){
-    int index = 0;
-    _reprRecurse(t, 0, &index);
-}
-
 void showShape(tensor* t){
     printf("%i dims: { ", t->ndim);
     for(int i = 0; i < t->ndim; i++){
         printf("%i", t->shape[i]);
         if(i != t->ndim -1) printf(", ");
     }
-    printf(" }");
+    printf(" }\n");
+}
+
+void repr(tensor* t){
+    int index = 0;
+    showShape(t);
+    _reprRecurse(t, 0, &index);
 }
 
 tensor* createTensor(int* shape, int ndim){
