@@ -29,6 +29,7 @@ layer* input(tensor* t){
     return lay;
 }
 
+//adjust this to handle paddings that arent "same"
 layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, int stride, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = CONV;
@@ -38,7 +39,7 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
     //{filters, channels, input X, input Y}
     int weightShape[4] = {kernelCount, channelCount, kernelShape[0], kernelShape[1]};
     //{batch count, filter, input X, input Y}
-    int activationShape[4] = {input->shape[0], kernelCount,input->shape[2],input->shape[3]};
+    int activationShape[4] = {input->shape[0], kernelCount, input->shape[2],input->shape[3]};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(activationShape, 4);
     lay->activationFunction = getActivation(activationFunc);
