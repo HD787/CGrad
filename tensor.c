@@ -50,7 +50,6 @@ void repr(tensor* t){
     _reprRecurse(t, 0, &index);
 }
 
-void randomize(tensor* t){;}
 
 tensor* createTensor(int* shape, int ndim){
     tensor* t = malloc(sizeof(tensor));

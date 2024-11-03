@@ -38,12 +38,12 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
     memcpy(lay->padding, padding, 2);
     //{filters, channels, input X, input Y}
     int weightShape[4] = {kernelCount, channelCount, kernelShape[0], kernelShape[1]};
-    int paddedX = input[shape[2]] + (padding[0]/2) - kernelShape[0];
-    int paddedY = input[shape[3]] + (padding[1]/2) - kernelShape[1];
+    int paddedX = input->shape[2] + (padding[0]/2) - kernelShape[0];
+    int paddedY = input->shape[3] + (padding[1]/2) - kernelShape[1];
     if (paddedX % stride != 0 || paddedY % stride != 0){
         printf("kernels does not fit evenly in input");
         free(lay);
-        return;
+        return NULL;
     }
     int xWidth = paddedX / stride + 1;
     int yWidth = paddedY / stride + 1;
