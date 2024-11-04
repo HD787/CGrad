@@ -21,11 +21,17 @@ void randomizeWeights(layer* lay){
     randomize(lay->weight);
 }
 
+void showLayer(layer* lay){
+   if(lay->layerType != INPUT) showShape(lay->weight);
+   showShape(lay->activation);
+}
+
 /* Layer generation functions */
 layer* input(tensor* t){
     layer* lay = malloc(sizeof(layer)); 
     lay->layerType = INPUT;
     lay->activation = t;
+    lay->activationType = NO_ACTIVATION;
     return lay;
 }
 
@@ -41,7 +47,7 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
     int paddedX = input->shape[2] + (padding[0]/2) - kernelShape[0];
     int paddedY = input->shape[3] + (padding[1]/2) - kernelShape[1];
     if (paddedX % stride != 0 || paddedY % stride != 0){
-        printf("kernels does not fit evenly in input");
+        printf("kernel does not fit evenly in input");
         free(lay);
         return NULL;
     }

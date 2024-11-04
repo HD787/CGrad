@@ -43,6 +43,14 @@ void showShape(tensor* t){
     printf(" }\n");
 }
 
+void showFlatArray(tensor* t){
+    printf("{ ");
+    for(int i = 0;i < t->length; i++){
+        printf(" %f, ", t->data[i]);
+    }
+    printf("}\n");
+}
+
 void repr(tensor* t){
     int index = 0;
     showShape(t);
@@ -128,7 +136,9 @@ void squeeze(tensor* t){
 
 /*ACTIVATION FUNCTIONS*/
 void relu(tensor* t){
-    ;
+    for(int i = 0; i < t->length; i++){
+        t->data[i] = (i < 0)? 0 : t->data[i];
+    }
 }
 
 void sigmoid(tensor* t){

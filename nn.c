@@ -6,10 +6,16 @@ nn* createNn(){
     return newnn;
 }
 
+void showNn(nn* n){
+    for(int i = 0; i < n->length; i++){
+        showLayer(&n->graph[i]);
+    }
+}
+
 void randomizeGraphWeights(nn* n){;}
 
 void addLayer(nn* n, layer* lay){
-    n->graph = realloc(n->graph, sizeof(layer) * n->length + 1);
+    n->graph = realloc(n->graph, sizeof(layer) * (n->length + 1));
     n->graph[n->length] = *lay;
     n->length++;
 }
@@ -60,12 +66,13 @@ void poolActivation(layer* prev, layer* curr){}
 
 void forward(nn* n){
     if(n->length < 1) { printf("neural net has less than one layer"); return; }
-    for(int i = 1; i < n->length; i++){
+    for(int i = 0; i < n->length; i++){
         switch(n->graph[i].layerType){
             case NO_TYPE:{
                 break;
             }
             case INPUT:{
+                printf("here input\n");
                 break;
             }
             case LINEAR:{
@@ -73,7 +80,8 @@ void forward(nn* n){
                 break;
             }
             case CONV:{
-                conv2dActivation(&n->graph[i - 1], &n->graph[i]);
+                printf("here\n");
+                // conv2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
             case POOL:{
