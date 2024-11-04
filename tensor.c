@@ -1,5 +1,4 @@
 #include "privateTensorOps.c"
-
 //ORGANIZE THIS by tensor gen functions, tensor op functions, and activation functions
 
 int findIndex(tensor* t, int* indices){
@@ -107,7 +106,12 @@ void reshape(tensor* t, int* shape, int ndim){
 void freeze(tensor* t){ t->grad = 0; }
 void unfreeze(tensor* t){ t->grad = 1; }
 
-void randomize(tensor* t){;}
+void randomize(tensor* t){
+    for(int i = 0; i < t->length; i++){
+        float scale = rand() / (float)RAND_MAX;
+        t->data[i] = -1.0f + scale * (1.0f - -1.0f);
+    }
+}
 
 void squeeze(tensor* t){
     int c = 0;

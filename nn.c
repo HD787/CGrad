@@ -6,6 +6,8 @@ nn* createNn(){
     return newnn;
 }
 
+void randomizeGraphWeights(nn* n){;}
+
 void addLayer(nn* n, layer* lay){
     n->graph = realloc(n->graph, sizeof(layer) * n->length + 1);
     n->graph[n->length] = *lay;
