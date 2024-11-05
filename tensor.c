@@ -75,7 +75,7 @@ tensor* pad(tensor* t, int* pads, int padDimCount){
     //add checks for this 
     int newShape[t->ndim]; //this may effect the compilation on barebones c11+ compilers
     memcpy(newShape, t->shape, sizeof(int) * t->ndim);
-    for(int i = 1; i < padDimCount + 1; i++) newShape[padDimCount - i] = (pads[padDimCount - i] / 2) + t->shape[t->ndim - i];
+    for(int i = 1; i < padDimCount + 1; i++) newShape[t->ndim - i] = (pads[padDimCount - i] / 2) + t->shape[t->ndim - i];
     int multiplier = 1;
     for(int i = 0; i < t->ndim; i++) multiplier *= newShape[i];
     tensor* nt = createTensor(newShape, t->ndim);

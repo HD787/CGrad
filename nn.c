@@ -34,25 +34,27 @@ void conv2dActivation(layer* prev, layer* curr){
         return;
     }
     tensor* nt = pad(prev->activation, curr->padding, curr->padDimCount);
-    int shape[4];
-    shape[0] = (curr->padDimCount > 3)? nt->shape[0] : 1;
-    shape[1] = (curr->padDimCount > 2)? nt->shape[1] : 1;
-    shape[2] = nt->shape[2];
-    shape[3] = nt->shape[3];
+    showShape(nt);
     //consider referring to x and y and width and height from now on
-    for(int i = 0; i < shape[0]; i++){//input tensor batch
-        for(int j = 0; j < shape[1]; j++){//input tensor channel dim
-            for(int k = 0; k < shape[3]; k += curr->kernelStride){//input tensor y dim
-                for(int l = 0; l < shape[2]; l += curr->kernelStride){//input tensor x dim
+    int outIndex = 0;
+    for(int i = 0; i < nt->shape[0]; i++){//input tensor batch 
+        for(int j = 0; j < nt->shape[1]; j++){//input tensor channel dim
+            for(int k = 0; k < nt->shape[3]; k += curr->kernelStride){//input tensor y dim
+                
+                for(int l = 0; l < nt->shape[2]; l += curr->kernelStride){//input tensor x dim
+
                     float sum = 0;
                     for(int m = 0; m < curr->kernelShape[1]; m++){ //kernel y dim
+                        // printf("here\n");
                         for(int n = 0; n < curr->kernelShape[0]; n++){ //kernel x dim
                             //multiply the weight value by the previous activation
-                            sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, k+m, l+n})] * prev->activation->data[findIndex(prev->activation, (int[]){i, j, k+m, l+n})]);
+                            //i think the issue is here, make sure youre indexing the weight and prev layer correctly
+                            printf("weight index: %i, nt index: %i\n", findIndex(curr->weight, (int[]){i, j, m, n}), findIndex(nt, (int[]){i, j, k+m, l+n}));
+                            // sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, m, n})] * nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})]);
                         }
                     }
                     //write sum to output activation tensor
-                    curr->activation->data[findIndex(curr->activation, (int[]){i, j, k, l})] = sum;
+                    // curr->activation->data[outIndex++] = sum;
                 }
             }
         }
@@ -72,7 +74,6 @@ void forward(nn* n){
                 break;
             }
             case INPUT:{
-                printf("here input\n");
                 break;
             }
             case LINEAR:{
@@ -80,8 +81,8 @@ void forward(nn* n){
                 break;
             }
             case CONV:{
-                printf("here\n");
-                // conv2dActivation(&n->graph[i - 1], &n->graph[i]);
+                if(i == 0) {printf("zeroeth layer"); break; }
+                conv2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
             case POOL:{

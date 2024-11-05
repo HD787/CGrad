@@ -41,7 +41,12 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
     lay->layerType = CONV;
     lay->padding = malloc(sizeof(int)*2);
     lay->padDimCount = 2;
-    memcpy(lay->padding, padding, 2);
+    
+    memcpy(lay->padding, padding, sizeof(int) * 2);
+    lay->kernelShape = malloc(sizeof(int)*2);
+    memcpy(lay->kernelShape, kernelShape, sizeof(int)*2);
+    lay->kernelDimCount = 2;
+    lay->kernelStride = stride;
     //{filters, channels, input X, input Y}
     int weightShape[4] = {kernelCount, channelCount, kernelShape[0], kernelShape[1]};
     int paddedX = input->shape[2] + (padding[0]/2) - kernelShape[0];
