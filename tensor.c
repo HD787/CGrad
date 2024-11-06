@@ -81,12 +81,12 @@ tensor* pad(tensor* t, int* pads, int padDimCount){
     tensor* nt = createTensor(newShape, t->ndim);
     float* newData = calloc(multiplier, sizeof(float));
     int i = 0; int j = 0;
-
     while(i < t->length && j < multiplier){
-        coord* coords = findCoords(t, j);
+        coord* coords = findCoords(nt, j);
         int inPad = 0;
-        for(int k = 0; k < t->ndim; k++){
-            if(coords->coords[k] < (pads[k]/2) || coords->coords[k] > newShape[k] - (pads[k]/2)-1){
+        //this doesnt work
+        for(int k = 1; k < padDimCount + 1; k++){
+            if(coords->coords[nt->ndim - k] < (pads[padDimCount - k]/2) || coords->coords[nt->ndim - k] > nt->shape[nt->ndim - k] - (pads[padDimCount - k]/2)-1){
                 inPad = 1;
                 break;
             }
@@ -97,7 +97,6 @@ tensor* pad(tensor* t, int* pads, int padDimCount){
         i++;
         deleteCoords(coords);
     }
-    free(t->data);
     nt->data = newData;
     nt->length = multiplier;
     return nt;

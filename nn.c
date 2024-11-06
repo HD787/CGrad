@@ -33,28 +33,31 @@ void conv2dActivation(layer* prev, layer* curr){
         printf("channel count mismatch between input and current layer got %i, expected %i", prev->activation->shape[1], curr->weight->shape[1]); 
         return;
     }
+    
     tensor* nt = pad(prev->activation, curr->padding, curr->padDimCount);
-    showShape(nt);
+    repr(nt);
     //consider referring to x and y and width and height from now on
+
     int outIndex = 0;
     for(int i = 0; i < nt->shape[0]; i++){//input tensor batch 
         for(int j = 0; j < nt->shape[1]; j++){//input tensor channel dim
-            for(int k = 0; k < nt->shape[3]; k += curr->kernelStride){//input tensor y dim
+            for(int k = 0; k < nt->shape[2] - curr->kernelShape[0]; k += curr->kernelStride){//input tensor y dim
                 
-                for(int l = 0; l < nt->shape[2]; l += curr->kernelStride){//input tensor x dim
-
+                for(int l = 0; l < nt->shape[3] - curr->kernelShape[1]; l += curr->kernelStride){//input tensor x dim
                     float sum = 0;
-                    for(int m = 0; m < curr->kernelShape[1]; m++){ //kernel y dim
+                    for(int m = 0; m < curr->kernelShape[0]; m++){ //kernel y dim
                         // printf("here\n");
-                        for(int n = 0; n < curr->kernelShape[0]; n++){ //kernel x dim
+                        for(int n = 0; n < curr->kernelShape[1]; n++){ //kernel x dim
+                            
                             //multiply the weight value by the previous activation
                             //i think the issue is here, make sure youre indexing the weight and prev layer correctly
-                            printf("weight index: %i, nt index: %i\n", findIndex(curr->weight, (int[]){i, j, m, n}), findIndex(nt, (int[]){i, j, k+m, l+n}));
-                            // sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, m, n})] * nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})]);
+                            // printf("weight index: %i, nt index: %i\n", findIndex(curr->weight, (int[]){i, j, m, n}), findIndex(nt, (int[]){i, j, k+m, l+n}));
+                            // printf("weight index: %f, nt index: %f\n", curr->weight->data[findIndex(curr->weight, (int[]){i, j, m, n})], nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})]);
+                            sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, m, n})] * nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})]);
                         }
                     }
                     //write sum to output activation tensor
-                    // curr->activation->data[outIndex++] = sum;
+                    curr->activation->data[outIndex++] = sum;
                 }
             }
         }
