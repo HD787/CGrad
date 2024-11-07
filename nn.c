@@ -50,12 +50,12 @@ void conv2dActivation(layer* prev, layer* curr){
                         }
                     }
                     //write sum to output activation tensor
+                    printf("%f\n", sum);
                     curr->activation->data[outIndex++] = sum;
                 }
             }
         }
     }
-    curr->activation = nt;
 }
 
 void linearActivation(layer* prev, layer* curr){}
