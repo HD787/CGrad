@@ -62,6 +62,7 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
     int activationShape[4] = {input->shape[0], kernelCount, xWidth, yWidth};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(activationShape, 4);
+    lay->activationType = activationFunc;
     lay->activationFunction = getActivation(activationFunc);
     return lay;
 }

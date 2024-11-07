@@ -136,7 +136,7 @@ void squeeze(tensor* t){
 /*ACTIVATION FUNCTIONS*/
 void relu(tensor* t){
     for(int i = 0; i < t->length; i++){
-        t->data[i] = (i < 0)? 0 : t->data[i];
+        t->data[i] = (t->data[i] < 0)? 0 : t->data[i];
     }
 }
 
