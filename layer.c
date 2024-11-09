@@ -70,9 +70,12 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
 layer* linear(tensor* input, int* outputShape, int outputLength, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = LINEAR;
-    int weightShape[2] = {outputLength, input->length};
+    int inputFeatures = input->shape[1] * input->shape[2] * input->shape[3];
+    // Define the shape of the weight tensor
+    int weightShape[2] = {inputFeatures, outputLength};
     lay->weight = createTensor(weightShape, 4);
     lay->activation = createTensor(outputShape, 4);
+    lay->activationType = activationFunc;
     lay->activationFunction = getActivation(activationFunc);
     return lay;
 }

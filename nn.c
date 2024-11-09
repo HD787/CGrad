@@ -39,7 +39,6 @@ void conv2dActivation(layer* prev, layer* curr){
     for(int i = 0; i < nt->shape[0]; i++){//input tensor batch 
         for(int j = 0; j < nt->shape[1]; j++){//input tensor channel dim
             for(int k = 0; k < nt->shape[2] - curr->kernelShape[0] - 1; k += curr->kernelStride){//input tensor y dim
-                
                 for(int l = 0; l < nt->shape[3] - curr->kernelShape[1] - 1; l += curr->kernelStride){//input tensor x dim
                     float sum = 0;
                     for(int m = 0; m < curr->kernelShape[0]; m++){ //kernel y dim
@@ -57,7 +56,17 @@ void conv2dActivation(layer* prev, layer* curr){
     }
 }
 
-void linearActivation(layer* prev, layer* curr){}
+void linearActivation(layer* prev, layer* curr){
+    //iterate
+    for(int i = 0; i < curr->weightShape[0]; i++){
+        int sum = 0;
+        for(int j = 0; j< curr->weightShape[1]; j++){
+            //multiply all the value of the input tensor activation by the rows(columns) of the wight tensor
+            //curr->activation[j]
+
+        }
+    }
+}
 
 void poolActivation(layer* prev, layer* curr){}
 
@@ -76,7 +85,7 @@ void forward(nn* n){
                 break;
             }
             case CONV:{
-                if(i == 0) {printf("zeroeth layer"); break; }
+                if(i == 0) { printf("zeroeth layer"); break; }
                 conv2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
