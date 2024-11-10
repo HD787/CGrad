@@ -58,12 +58,12 @@ void conv2dActivation(layer* prev, layer* curr){
 
 void linearActivation(layer* prev, layer* curr){
     //iterate
-    for(int i = 0; i < curr->weightShape[0]; i++){
+    for(int i = 0; i < curr->weight->shape[0]; i++){
         int sum = 0;
-        for(int j = 0; j < curr->weightShape[1]; j++){
+        for(int j = 0; j < curr->weight->shape[1]; j++){
             //multiply all the value of the input tensor activation by the rows(columns) of the wight tensor
             //this is commutative so dont worry about input tensor shape
-            sum = curr->weight[i][j] * prev->activation->data[j];
+            sum = curr->weight->data[findIndex(curr->weight, (int[]){i, j})] * prev->activation->data[j];
         }
         curr->activation->data[i] = sum;
     }
