@@ -82,39 +82,8 @@ layer* linear(tensor* input, int* outputShape, int outputLength, int channelCoun
 
 layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
-    int x = (t->shape[t->ndim]);
-    int y = (t->shape[t->ndim - 1]);
-    if(t->ndim > 4){
-        printf("invalid shape");
-        return NULL; 
-    }
-    switch(t->ndim){
-        case 1: {
-            printf("invalid shape");
-            return NULL;
-        }
-        case 2:{
-            int shape[2] = { x, y };
-            lay->activation = createTensor(shape, 2);
-        }
-        case 3:{
-            int shape[3] = {
-                t->shape[0],
-                x,
-                y
-            };
-            lay->activation = createTensor(shape, 3);
-        }
-        case 4:{
-            int shape[4]= {
-                t->shape[0], 
-                t->shape[1],
-                x,
-                y
-            };
-            lay->activation = createTensor(shape, 4);
-        }
-    }
+    int shape[4] = {t->shape[0], t->shape[1], /*something*/, /*something*/};
+
     memcpy(lay->padding, padding, padDimCount);
     lay->weight = NULL;
     lay->layerType = POOL;
