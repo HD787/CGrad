@@ -82,8 +82,11 @@ layer* linear(tensor* input, int* outputShape, int outputLength, int channelCoun
 
 layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
+    lay->kernelShape = malloc(sizeof(int)*2);
+    memcpy(lay->kernelShape, kernelShape, sizeof(int)*2);
+    lay->kernelDimCount = 2;
     int shape[4] = {t->shape[0], t->shape[1], /*something*/, /*something*/};
-
+    
     memcpy(lay->padding, padding, padDimCount);
     lay->weight = NULL;
     lay->layerType = POOL;
