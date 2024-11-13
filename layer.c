@@ -67,7 +67,7 @@ layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, in
     return lay;
 }
 
-layer* linear(tensor* input, int* outputShape, int outputLength, int channelCount, int activationFunc){
+layer* linear(tensor* input, int* outputShape, int outputLength, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = LINEAR;
     int inputFeatures = input->shape[1] * input->shape[2] * input->shape[3];
