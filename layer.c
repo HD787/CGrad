@@ -85,8 +85,9 @@ layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount, int
     lay->kernelShape = malloc(sizeof(int)*2);
     memcpy(lay->kernelShape, kernelShape, sizeof(int)*2);
     lay->kernelDimCount = 2;
-    int shape[4] = {t->shape[0], t->shape[1], /*something*/, /*something*/};
-    
+    //the idea is like a conv but the kernel should break it up into even chunks
+    int shape[4] = {t->shape[0], t->shape[1], (t->shape[2] + padding[1])/kernelShape[0], (t->shape[3] + padding[1])};
+    lay->activation = createTensor(shape, 4); 
     memcpy(lay->padding, padding, padDimCount);
     lay->weight = NULL;
     lay->layerType = POOL;
