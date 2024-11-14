@@ -39,10 +39,10 @@ layer* input(tensor* t){
 layer* conv2d(tensor* input, int* padding, int* kernelShape, int kernelCount, int stride, int channelCount, int activationFunc){
     layer* lay = malloc(sizeof(layer));
     lay->layerType = CONV;
-    lay->padding = malloc(sizeof(int)*2);
+    lay->padShape = malloc(sizeof(int)*2);
     lay->padDimCount = 2;
     
-    memcpy(lay->padding, padding, sizeof(int) * 2);
+    memcpy(lay->padShape, padding, sizeof(int) * 2);
     lay->kernelShape = malloc(sizeof(int)*2);
     memcpy(lay->kernelShape, kernelShape, sizeof(int)*2);
     lay->kernelDimCount = 2;
@@ -88,7 +88,7 @@ layer* maxPool2d(tensor* t, int* kernelShape, int* padding, int padDimCount, int
     //the idea is like a conv but the kernel should break it up into even chunks
     int shape[4] = {t->shape[0], t->shape[1], (t->shape[2] + padding[1])/kernelShape[0], (t->shape[3] + padding[1])/kernelShape[1]};
     lay->activation = createTensor(shape, 4); 
-    memcpy(lay->padding, padding, padDimCount);
+    memcpy(lay->padShape, padding, sizeof(int)*padDimCount);
     lay->weight = NULL;
     lay->layerType = POOL;
     lay->activationFunction = getActivation(activationFunc);

@@ -33,7 +33,7 @@ void conv2dActivation(layer* prev, layer* curr){
         printf("channel count mismatch between input and current layer got %i, expected %i", prev->activation->shape[1], curr->weight->shape[1]); 
         return;
     }
-    tensor* nt = pad(prev->activation, curr->padding, curr->padDimCount);
+    tensor* nt = pad(prev->activation, curr->padShape, curr->padDimCount);
     //consider referring to x and y and width and height from now on
     int outIndex = 0;
     for(int i = 0; i < nt->shape[0]; i++){//input tensor batch 

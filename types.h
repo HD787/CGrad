@@ -20,11 +20,11 @@ typedef struct{
     int grad;
 }tensor;
 
-typedef struct layer{
+typedef struct{
     tensor* weight;
     tensor* bias;
     tensor* activation;
-    int* padding;
+    int* padShape;
     int* kernelShape;
     void(*activationFunction)(tensor* t);
     int useBias;
