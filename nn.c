@@ -42,7 +42,6 @@ void conv2dActivation(layer* prev, layer* curr){
                 for(int l = 0; l < nt->shape[3] - curr->kernelShape[1] - 1; l += curr->kernelStride){//input tensor x dim
                     float sum = 0;
                     for(int m = 0; m < curr->kernelShape[0]; m++){ //kernel y dim
-                        // printf("here\n");
                         for(int n = 0; n < curr->kernelShape[1]; n++){ //kernel x dim
                             //multiply the weight value by the previous activation
                             sum += (curr->weight->data[findIndex(curr->weight, (int[]){i, j, m, n})] * nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})]);
@@ -82,11 +81,12 @@ void forward(nn* n){
                 break;
             }
             case LINEAR:{
-                //linear function
+                if(i == 0) { printf("tried to perform linear connection zeroeth layer"); break; }
+                linearActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
             case CONV:{
-                if(i == 0) { printf("zeroeth layer"); break; }
+                if(i == 0) { printf("tried to perform convolution on zeroeth layer"); break; }
                 conv2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
