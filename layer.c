@@ -22,7 +22,7 @@ void randomizeWeights(layer* lay){
 }
 
 void showLayer(layer* lay){
-   if(lay->layerType != INPUT) showShape(lay->weight);
+   if(lay->layerType != INPUT && lay->layerType != MAX_POOL) showShape(lay->weight);
    showShape(lay->activation);
 }
 
@@ -92,7 +92,7 @@ layer* maxPool2d(tensor* t, int* kernelShape, int* padShape, int padDimCount, in
     lay->padShape = malloc(sizeof(int)*padDimCount);
     memcpy(lay->padShape, padShape, sizeof(int)*padDimCount);
     lay->weight = NULL;
-    lay->layerType = POOL;
+    lay->layerType = MAX_POOL;
     lay->activationFunction = getActivation(activationFunc);
     return lay;
 }

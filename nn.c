@@ -68,7 +68,28 @@ void linearActivation(layer* prev, layer* curr){
     }
 }
 
-void poolActivation(layer* prev, layer* curr){}
+void maxPool2dActivation(layer* prev, layer* curr){
+    // consider adding error checks
+    tensor* nt = pad(prev->activation, curr->padShape, curr->padDimCount);
+    int outIndex = 0;
+    for(int i = 0; i < nt->shape[0]; i++){//input tensor batch 
+        for(int j = 0; j < nt->shape[1]; j++){//input tensor channel dim
+            for(int k = 0; k < nt->shape[2] - curr->kernelShape[0] - 1; k += curr->kernelStride){//input tensor y dim
+                for(int l = 0; l < nt->shape[3] - curr->kernelShape[1] - 1; l += curr->kernelStride){//input tensor x dim
+                    float currMax = -INFINITY;
+                    for(int m = 0; m < curr->kernelShape[0]; m++){ //kernel y dim
+                        for(int n = 0; n < curr->kernelShape[1]; n++){ //kernel x dim
+                            //find the largest value within the kernel frame and set it to currMax
+                            if(nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})] > currMax) currMax = nt->data[findIndex(nt, (int[]){i, j, k+m, l+n})]; 
+                        }
+                    }
+                    //write sum to output activation tensor
+                    curr->activation->data[outIndex++] = currMax;
+                }
+            }
+        }
+    }
+}
 
 void forward(nn* n){
     if(n->length < 1) { printf("neural net has less than one layer"); return; }
@@ -81,7 +102,7 @@ void forward(nn* n){
                 break;
             }
             case LINEAR:{
-                if(i == 0) { printf("tried to perform linear connection zeroeth layer"); break; }
+                if(i == 0) { printf("tried to perform linear forward pass zeroeth layer"); break; }
                 linearActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
@@ -90,8 +111,9 @@ void forward(nn* n){
                 conv2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
-            case POOL:{
-                //pool function
+            case MAX_POOL:{
+                if(i == 0) { printf("tried to perform max pool on zeroeth layer"); break; }
+                // maxPool2dActivation(&n->graph[i - 1], &n->graph[i]);
                 break;
             }
         }

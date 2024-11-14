@@ -3,7 +3,7 @@ enum layerTypes{
     INPUT,
     LINEAR,
     CONV,
-    POOL
+    MAX_POOL
 };
 
 enum activationTypes{
