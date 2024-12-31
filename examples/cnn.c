@@ -1,3 +1,4 @@
+//be aware of the relative path, may wanna reorganize this
 #include "../CGrad.h"
 #define PREV_ACT n->graph[n->length - 1].activation 
 
