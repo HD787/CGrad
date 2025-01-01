@@ -123,6 +123,7 @@ void forward(nn* n){
     }
 }
 
+//TODO: lowkey the name CGrad is innapropriate until this gets implemented
 void backward(nn* n){
 
 }
