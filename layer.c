@@ -16,7 +16,6 @@ void (*getActivation(int function))(tensor* t){
     }
 }
 
-
 void randomizeWeights(layer* lay){
     randomize(lay->weight);
 }

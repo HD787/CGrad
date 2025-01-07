@@ -20,6 +20,7 @@ typedef struct{
     int grad;
 }tensor;
 
+//each layer may need and additional tensor or something for the backward pass
 typedef struct{
     tensor* weight;
     tensor* bias;

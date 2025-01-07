@@ -102,6 +102,7 @@ tensor* pad(tensor* t, int* pads, int padDimCount){
     return nt;
 }
 
+//TENSOR OPS
 void reshape(tensor* t, int* shape, int ndim){
     int size = 1;
     for(int i = 0; i < ndim; i++) size *= shape[i];
