@@ -12,7 +12,11 @@ void showNn(nn* n){
     }
 }
 
-void randomizeGraphWeights(nn* n){;}
+void randomizeGraphWeights(nn* n){
+    for(int i = 0; i < n->length; i++){
+        randomize(n->graph[i].weight);
+    };
+}
 
 void addLayer(nn* n, layer* lay){
     n->graph = realloc(n->graph, sizeof(layer) * (n->length + 1));
